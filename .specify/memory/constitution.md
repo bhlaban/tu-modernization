@@ -1,21 +1,23 @@
 <!--
   Sync Impact Report
   ==================
-  Version change: N/A → 1.0.0 (initial creation)
-  Modified principles: None (initial creation)
-  Added sections:
-    - Core Principles (5 principles)
-    - Technology Stack
-    - Development Workflow
-    - Governance
+  Version change: 1.0.0 → 1.1.0 (MINOR — material expansion)
+  Modified principles: None
+  Added sections: None
   Removed sections: None
+  Modified sections:
+    - Technology Stack: added User Data Storage line
+      (Microsoft 365 SharePoint, OneDrive, Azure Storage)
   Templates requiring updates:
     - plan-template.md ✅ no changes needed (Constitution Check is dynamic)
     - spec-template.md ✅ no changes needed (generic structure)
     - tasks-template.md ✅ no changes needed (generic structure)
     - checklist-template.md ✅ no changes needed (generic structure)
     - agent-file-template.md ✅ no changes needed (generic structure)
-  Follow-up TODOs: None
+  Follow-up TODOs:
+    - specs/001-ai-chapter-assistant/research.md may need
+      updated storage decisions if M365 integration is in scope
+      for the AI assistant feature.
 -->
 
 # TU Modernization Platform Constitution
@@ -112,6 +114,9 @@ without disrupting chapter activities.
 
 - **Backend**: .NET / C#
 - **Frontend**: React (JavaScript/TypeScript)
+- **User Data Storage**: Microsoft 365 (SharePoint, OneDrive)
+  and/or Azure Storage for end-user documents, forms, and
+  data files
 - **Documentation**: Markdown
 - **API Specification**: OpenAPI / Swagger
 - **Testing**: xUnit (.NET), Jest/React Testing Library (frontend)
@@ -151,4 +156,4 @@ and conventions in the project. Compliance is mandatory.
   Simplicity principle MUST be documented in the Complexity
   Tracking section of the relevant plan document.
 
-**Version**: 1.0.0 | **Ratified**: 2026-03-18 | **Last Amended**: 2026-03-18
+**Version**: 1.1.0 | **Ratified**: 2026-03-18 | **Last Amended**: 2026-03-18
