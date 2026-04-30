@@ -88,6 +88,25 @@ A chapter leader asks the assistant about upcoming chapter events, meetings, or 
 
 ---
 
+### User Story 6 - Perform Write Actions (Create Events, Send Emails) (Priority: P6)
+
+A chapter leader asks the assistant to perform a write action — creating a calendar event or drafting and sending an email — on their behalf. The assistant generates a preview of the proposed action and requires explicit confirmation before executing it. For example, a chapter president says "Schedule a board meeting for next Tuesday at 7pm at the community center" and the assistant drafts a calendar event with the specified details, presents it for review, and creates it only after the leader confirms.
+
+**Why this priority**: Once chapter leaders trust the assistant for information retrieval (US1–US5), enabling basic write actions eliminates additional context-switching into Outlook/Calendar. However, write actions carry higher risk than read-only queries, hence the confirmation requirement and lower priority.
+
+**Independent Test**: Can be tested by requesting write actions (create event, send email), verifying the confirmation preview is accurate, and confirming that the action executes correctly under the user's identity and permissions.
+
+**Acceptance Scenarios**:
+
+1. **Given** a chapter leader asks the assistant to create a calendar event, **When** the assistant interprets the request, **Then** it presents a structured preview (subject, date/time, location, attendees) and waits for explicit confirmation before creating the event.
+2. **Given** a chapter leader confirms a proposed calendar event, **When** the assistant executes the action, **Then** the event is created in the user's Exchange Online calendar via their delegated permissions, and the assistant confirms success with a link to the new event.
+3. **Given** a chapter leader asks the assistant to send an email, **When** the assistant drafts the email, **Then** it presents a preview (recipients, subject, body) and waits for confirmation before sending.
+4. **Given** a chapter leader reviews a proposed write action and decides not to proceed, **When** they cancel, **Then** no changes are made to their M365 environment and the assistant acknowledges the cancellation.
+5. **Given** a chapter leader confirms a write action but the M365 service returns an error, **When** execution fails, **Then** the assistant informs the user of the failure with the error reason and suggests retrying or performing the action manually.
+6. **Given** the assistant misinterprets a query as a write action (e.g., "draft an email" vs. "find the email I drafted"), **When** the confirmation preview is shown, **Then** the user can cancel without any write occurring, serving as a safeguard against misinterpretation.
+
+---
+
 ### Edge Cases
 
 - What happens when a chapter leader asks about data they don't have permission to access within M365? The assistant must respect existing M365 permissions and inform the user that the content is restricted rather than surfacing unauthorized data.
@@ -129,7 +148,7 @@ A chapter leader asks the assistant about upcoming chapter events, meetings, or 
 
 - **Chapter**: A local Trout Unlimited chapter with its own independent Microsoft 365 tenant, administered separately. Has a name, chapter number, tenant identity, and associated M365 data. Chapters operate independently with their own M365 admin and follow national TU guidelines. The assistant must be onboarded per-tenant.
 - **Chapter Leader**: A volunteer who holds a leadership role (president, vice president, treasurer, secretary, conservation chair, etc.) within a chapter. Authenticated via their M365 organizational account and authorized through membership in a designated M365 security group configured by the chapter's tenant admin. Each leader has specific M365 permissions governing what data they can access.
-- **Conversation**: A session between a chapter leader and the assistant, consisting of one or more exchanges. Maintains context for follow-up questions within the same session. Expires after 30 minutes of inactivity.
+- **Conversation**: A session between a chapter leader and the assistant, consisting of one or more turns (a turn is a single user query + assistant response pair). Maintains context for follow-up questions within the same session. Expires after 30 minutes of inactivity.
 - **Source Reference**: A pointer to the original M365 content (document, email, message, calendar event) from which the assistant derived part of its response. Includes the content type, name/subject, location, and a direct link.
 - **Query**: A natural-language question or request submitted by a chapter leader to the assistant.
 
@@ -160,6 +179,8 @@ A chapter leader asks the assistant about upcoming chapter events, meetings, or 
 - **SC-002**: 80% of answers provided by the assistant are rated as accurate and helpful by chapter leaders in post-interaction feedback.
 - **SC-003**: Chapter leaders reduce time spent searching for chapter information by at least 50% compared to manually navigating M365 applications.
 - **SC-004**: 90% of chapter leaders can successfully ask a question and receive a useful answer on their first interaction without training or documentation.
+
+> **Note**: SC-002, SC-003, and SC-004 are measured post-launch via usage analytics and user surveys. No in-app feedback mechanism is included in the initial release scope.
 - **SC-005**: 100% of assistant responses that include factual claims contain at least one source citation linking to the original M365 content.
 - **SC-006**: The assistant never surfaces content that the authenticated user does not have M365 permission to view (zero unauthorized data exposure incidents).
 - **SC-007**: The assistant correctly declines to answer (rather than fabricating information) in at least 95% of cases where the requested information does not exist in the user's M365 data.
